@@ -2,10 +2,10 @@ apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'application'
 
-sourceCompatibility = 1.8
+sourceCompatibility = 1.7
 version = '1.0'
 compileJava.options.encoding = 'UTF-8'
-mainClassName = 'org.robot.lejos.ev3.RobotApplication'
+mainClassName = 'lv.startit.shumaher.ShumaherRun'
 
 jar {
 	manifest {
