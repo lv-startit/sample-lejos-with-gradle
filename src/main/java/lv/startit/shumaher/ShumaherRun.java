@@ -35,21 +35,21 @@ public class ShumaherRun {
 					action();	
 				 }
 				
-				 motorLeft.setSpeed(400);
+				 motorLeft.setSpeed(780);
 			}
 		
 	}
 
 	
 	private static void initialize() {
-		motorLeft.setSpeed(400);
-		motorRight.setSpeed(400);
+		motorLeft.setSpeed(780);
+		motorRight.setSpeed(780);
 	}
 	
 	
 	public static void action(){
 		motorLeft.setSpeed(100);
-		motorRight.setSpeed(400);
+		motorRight.setSpeed(780);
 		motorLeft.forward();
 		motorRight.forward();
 	}
