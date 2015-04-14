@@ -1,5 +1,6 @@
 package lv.startit.shumaher;
 
+import lejos.hardware.Button;
 import lejos.hardware.lcd.LCD;
 import lejos.hardware.motor.Motor;
 import lejos.hardware.port.SensorPort;
@@ -17,25 +18,27 @@ public class ShumaherRun {
 	static SampleProvider distance = us.getDistanceMode();
 	
 	static boolean check = false;
-	
+	static boolean exit;
 	
 	public static void main(String[] args) {
+		Thread t1 = new Thread(new ExitListener());
+		t1.start();
 		initialize();
 		float[] usample = new float[distance.sampleSize()];
-		
-		if(checkWall(usample)){
-			action();
-			
+		 while(!exit){
+			 motorRight.forward();
+			 motorLeft.forward();
+			if(checkWall(usample)){
+				action();	
+			}
+			motorLeft.setSpeed(750);
 		}
 	}
 
 	
 	private static void initialize() {
-		LCD.clear();
 		motorLeft.setSpeed(750);
 		motorRight.setSpeed(750);
-		motorLeft.forward();
-		motorRight.forward();
 	}
 	
 	
@@ -49,8 +52,15 @@ public class ShumaherRun {
 	}
 	
 	public static void action(){
-		 motorRight.stop();
-		 motorRight.backward();
+		motorLeft.setSpeed(300);
+		motorRight.setSpeed(750);
+	}
+	private static class ExitListener implements Runnable{
+		@Override
+		public void run() {
+			Button.waitForAnyPress();
+			exit = true;
+		}
 	}
 
 }
