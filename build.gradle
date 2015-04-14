@@ -1,0 +1,46 @@
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'application'
+
+sourceCompatibility = 1.8
+version = '1.0'
+compileJava.options.encoding = 'UTF-8'
+mainClassName = 'org.robot.lejos.ev3.RobotApplication'
+
+jar {
+	manifest {
+		attributes 'Implementation-Title': 'Gradle Lego/Lejos Mindstorms EV3 Example Project', 'Implementation-Version': version, 'Main-Class': mainClassName
+	}
+	from {
+		configurations.compile.collect {
+			it.isDirectory() ? it : zipTree(it)
+		}
+	}
+}
+
+configurations {
+	sshAntTask
+}
+
+repositories {
+	mavenCentral()
+	flatDir { dirs 'lib/ev3' }
+}
+
+dependencies {
+	sshAntTask 'org.apache.ant:ant-jsch:1.9.4', 'jsch:jsch:0.1.29'
+	compile group: 'commons-collections', name: 'commons-collections', version: '3.2'
+	runtime ':ev3classes:'
+	testCompile group: 'junit', name: 'junit', version: '4.+'
+}
+
+test { systemProperties 'property': 'value' }
+
+task deployEV3 << {
+	ant.taskdef(name: 'scp', classname: 'org.apache.tools.ant.taskdefs.optional.ssh.Scp', classpath: configurations.sshAntTask.asPath)
+	ant.scp(todir: ev3_username + '@' + ev3_server + ':/home/lejos/programs',
+	password: ev3_password,
+	verbose: 'true') {
+		fileset(dir: './build/libs') { include(name: '**/*.jar') }
+	}
+}
