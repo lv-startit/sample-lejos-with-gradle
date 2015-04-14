@@ -17,7 +17,6 @@ public class ShumaherRun {
 	private static EV3UltrasonicSensor us = new EV3UltrasonicSensor(SensorPort.S2);
 	static SampleProvider distance = us.getDistanceMode();
 	
-	static boolean check = false;
 	static boolean exit;
 	
 	public static void main(String[] args) {
@@ -25,36 +24,37 @@ public class ShumaherRun {
 		t1.start();
 		initialize();
 		float[] usample = new float[distance.sampleSize()];
-		 while(!exit){
-			 motorRight.forward();
-			 motorLeft.forward();
-			if(checkWall(usample)){
-				action();	
+		 
+			while(!exit){
+				distance.fetchSample(usample, 0);
+				 motorRight.forward();
+				 motorLeft.forward();
+				
+				 if(usample[0] < 0.3){
+					 distance.fetchSample(usample, 0);
+					action();	
+				 }
+				
+				 motorLeft.setSpeed(400);
 			}
-			motorLeft.setSpeed(750);
-		}
+		
 	}
 
 	
 	private static void initialize() {
-		motorLeft.setSpeed(750);
-		motorRight.setSpeed(750);
+		motorLeft.setSpeed(400);
+		motorRight.setSpeed(400);
 	}
 	
-	
-	private static boolean checkWall(float[] usample){
-		if(usample[0] < 0.1)
-		{
-		 return true;
-		}
-		
-		 return check;
-	}
 	
 	public static void action(){
-		motorLeft.setSpeed(300);
-		motorRight.setSpeed(750);
+		motorLeft.setSpeed(100);
+		motorRight.setSpeed(400);
+		motorLeft.forward();
+		motorRight.forward();
 	}
+	
+	
 	private static class ExitListener implements Runnable{
 		@Override
 		public void run() {
@@ -62,5 +62,7 @@ public class ShumaherRun {
 			exit = true;
 		}
 	}
+	
+	
 
 }
