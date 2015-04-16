@@ -45,8 +45,14 @@ public class ShumaherLast {
 	private static boolean trigerredLeftBumper, trigerredRightBumper;
 	
 	public static void main(String[] args) {
-		
+		//---
 		initialize();
+		LCD.drawString("Wait for button pressed", 1, 1);
+		Button.ENTER.waitForPress();
+		Delay.msDelay(5000);
+		motorRight.forward();
+		motorLeft.forward();
+		//---
 
 		while(!exit){
 			
@@ -117,8 +123,6 @@ public class ShumaherLast {
 		rightTouch = new TouchSensorR();
 		motorLeft.setSpeed(defaultSpeed);
 		motorRight.setSpeed(defaultSpeed);
-		motorRight.forward();
-		motorLeft.forward();
 	}
 	public static void turnLeft(){
 		motorLeft.setSpeed(Math.round(defaultSpeed/1.5));
