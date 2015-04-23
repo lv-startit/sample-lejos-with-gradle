@@ -5,7 +5,7 @@ apply plugin: 'application'
 sourceCompatibility = 1.7
 version = '1.0'
 compileJava.options.encoding = 'UTF-8'
-mainClassName = 'lv.startit.shumaher.ShumaherRun'
+mainClassName = 'lv.startit.shumaher.ShumaherLast'
 
 jar {
 	manifest {
