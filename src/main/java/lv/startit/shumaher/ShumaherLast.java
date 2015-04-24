@@ -45,14 +45,12 @@ public class ShumaherLast {
 	private static boolean trigerredLeftBumper, trigerredRightBumper;
 	
 	public static void main(String[] args) {
-		//---
 		initialize();
 		LCD.drawString("Wait for button pressed", 1, 1);
 		Button.ENTER.waitForPress();
 		Delay.msDelay(5000);
 		motorRight.forward();
 		motorLeft.forward();
-		//---
 
 		while(!exit){
 			
